@@ -78,10 +78,40 @@ enunciado:
 
 let atual = 0;
 let perguntaAtual;
+let historiaFinal = "";
 
 function mostraPergunta(){
+  if(atual >= perguntas.length){
+    mostraResultado();
+    return;
+  }
     perguntaAtual = perguntas[atual];
     caixaPerguntas.textContent = perguntaAtual.enunciado;
+    caixaAlternativas.textContent = "";
+    mostraAlterntivas();
 }
 
-mostraPergunta()
+    function mostraAlterntivas(){
+      for(const alternativa of perguntaAtual.alternativas){
+        const botaoAlternativa = document.createElement("button");
+        botaoAlternativa.textContent = alternativa.texto;
+        botaoAlternativa.addEventListener("click", () => respostaSelecionada
+        (alternativa));
+        caixaAlternativas.appendChild(botaoAlternativa);
+      }
+    }
+
+    function respostaSelecionada(opcaoSelecionada){
+      const afirmacoes = opcaoSelecionada.afirmacao;
+      historiaFinal += afirmacoes + " ";
+      atual++;
+      mostraPergunta();
+    }
+
+    function mostraResultado(){
+      caixaPerguntas.textContent = "Em 2049...";
+      textoReultado.textContent = historiaFinal;
+      caixaAlternativas.textContent = "";
+    }
+
+    mostraPergunta()
